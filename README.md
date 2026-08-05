@@ -1,11 +1,68 @@
-# rock-a-pomo
+# Rock-a-Pomo
 
-Contest-ready repository for Rock-a-Pomo.
+**揺らして、ポモドーロの休憩を始めよう。**
 
-This repository keeps only the final submission code and presentation assets.
-Experimental code and rough prototypes live in `tantrum-robot`.
+Rock-a-Pomoは、M5StickC Plus2で作ったポモドーロロボットです。  
+作業時間が終わると泣き始め、両手で優しく揺らしてあやすと、休憩時間が始まります。
 
-## Structure
+<!-- TODO: 完成写真に差し替える -->
+<!--
+![Rock-a-Pomo](./docs/cover.jpg)
+-->
+
+- Hacksterプロジェクト: `TODO`
+- デモ動画: `TODO`
+
+## 概要
+
+ポモドーロタイマーは便利ですが、通知は簡単に閉じたり、無視したりできます。
+
+Rock-a-Pomoは、その通知を身体的なインタラクションへ置き換えます。
+
+作業時間中、ロボットは静かに眠っています。タイマーが終了すると、画面が泣き顔に変わり、内蔵ブザーから泣き声を出します。
+
+泣き止ませるには、ロボットを両手で持ち、赤ちゃんをあやすように優しく揺らす必要があります。十分にあやされるとRock-a-Pomoは笑顔になり、休憩時間が始まります。
+
+外装は、M5StickC Plus2本体よりも意図的に大きく設計しています。ユーザーがキーボードやマウスから両手を離し、一度作業から意識を切り替えられるようにするためです。
+
+## 動作の流れ
+
+Rock-a-Pomoは、次のサイクルを繰り返します。
+
+1. 作業時間中は眠る
+2. 作業時間が終わると泣く
+3. 内蔵IMUで優しい揺れを検出する
+4. 適切に揺らしている間、あやし量が増える
+5. あやしが完了すると笑顔になり、休憩が始まる
+6. 休憩後、再び眠って次の作業時間を始める
+
+```text
+SLEEPING
+    ↓ 作業時間が終了
+CRYING
+    ↓ 適切な揺れを検出
+SOOTHING
+    ├─ あやし量がゼロに戻る → CRYING
+    └─ あやし量が目標に到達 → LAUGHING
+                                    ↓ 休憩時間が終了
+                                 SLEEPING
+```
+
+あやし量は、検出した動きが弱すぎず、強すぎない場合にだけ増加します。
+
+あやしが完了する前に揺らすのをやめると、あやし量は少しずつ減少します。ゼロになると、Rock-a-Pomoは再び泣き始めます。
+
+## M5StickC Plus2の活用
+
+| 機能 | Rock-a-Pomoでの役割 |
+|---|---|
+| ディスプレイ | 表情とあやし量を表示する |
+| ブザー | 泣き声と通知音を出す |
+| IMU | あやすための揺れを検出する |
+| 内蔵バッテリー | ケーブルなしで手に持てるようにする |
+| ESP32 | タイマー、状態遷移、画面、音、IMUを制御する |
+
+## リポジトリ構成
 
 ```text
 rock-a-pomo/
@@ -13,17 +70,82 @@ rock-a-pomo/
 ├── firmware/
 │   └── rock_a_pomo/
 │       └── rock_a_pomo.ino
-└── docs/
-    ├── cover.jpg
-    └── interaction-flow.png
+├── docs/
+│   ├── cover.jpg
+│   └── interaction-flow.png
+└── cad/
+    ├── rock-a-pomo.stl
+    └── rock-a-pomo.step
 ```
 
-## Firmware
+完成版のファームウェアはこちらです。
 
-Open `firmware/rock_a_pomo/rock_a_pomo.ino` in the Arduino IDE.
+[`firmware/rock_a_pomo/rock_a_pomo.ino`](./firmware/rock_a_pomo/rock_a_pomo.ino)
 
-## Docs
+## セットアップ
 
-- `docs/cover.jpg`: cover image for the submission
-- `docs/interaction-flow.png`: interaction flow diagram
+<!-- TODO: 実際の開発環境と設定に置き換える -->
+
+### 必要な環境
+
+- M5Stack M5StickC Plus2
+- Arduino IDE: `TODO`
+- ESP32ボードパッケージ: `TODO`
+- M5Stackライブラリ: `TODO`
+- その他のライブラリ: `TODO`
+
+### 書き込み方法
+
+1. 必要なボードパッケージとライブラリをインストールします。
+2. `firmware/rock_a_pomo/rock_a_pomo.ino`を開きます。
+3. 使用するボードとポートを選択します。
+4. M5StickC Plus2へプログラムを書き込みます。
+5. 外装を3Dプリントし、M5StickC Plus2を取り付けます。
+
+<!-- TODO: 正確なボード設定と書き込み手順を追加する -->
+
+## 設定項目
+
+次の値は、ソースコード内で変更できます。
+
+- 作業時間
+- 休憩時間
+- 揺れ判定の最小値
+- 揺れ判定の最大値
+- あやし量の増加速度
+- あやし量の減少速度
+- あやし完了に必要な値
+
+<!-- TODO: 実際の変数名と初期値を追加する -->
+
+## 3Dデータ
+
+`cad`ディレクトリには、完成版では次のファイルを収録する予定です。
+
+- `rock-a-pomo.stl`: 3Dプリント用データ
+- `rock-a-pomo.step`: 編集可能なCADデータ
+
+<!-- TODO: 実際の印刷設定を追加する -->
+<!--
+使用プリンタ:
+フィラメント:
+積層ピッチ:
+インフィル:
+サポート:
+-->
+
+## 今後の発展
+
+今後は、次のような機能を追加する構想があります。
+
+- 泣いているときに手を動かすサーボ機構
+- 左右に揺れる起き上がりこぼし構造
+- 本体上でのタイマー設定
+- 表情や泣き声の追加
+
+## ライセンス
+
+<!-- TODO: 採用するライセンスを追加する -->
+
+`TODO`
 
