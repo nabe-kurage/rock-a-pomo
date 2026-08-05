@@ -5,11 +5,6 @@
 Rock-a-Pomoは、M5StickC Plus2で作ったポモドーロロボットです。  
 作業時間が終わると泣き始め、両手で優しく揺らしてあやすと、休憩時間が始まります。
 
-<!-- TODO: 完成写真に差し替える -->
-<!--
-![Rock-a-Pomo](./docs/cover.jpg)
--->
-
 - Hacksterプロジェクト: `TODO`
 - デモ動画: `TODO`
 
@@ -67,15 +62,9 @@ SOOTHING
 ```text
 rock-a-pomo/
 ├── README.md
-├── firmware/
-│   └── rock_a_pomo/
-│       └── rock_a_pomo.ino
-├── docs/
-│   ├── cover.jpg
-│   └── interaction-flow.png
-└── cad/
-    ├── rock-a-pomo.stl
-    └── rock-a-pomo.step
+└── firmware/
+    └── rock_a_pomo/
+        └── rock_a_pomo.ino
 ```
 
 完成版のファームウェアはこちらです。
@@ -120,10 +109,7 @@ rock-a-pomo/
 
 ## 3Dデータ
 
-`cad`ディレクトリには、完成版では次のファイルを収録する予定です。
-
-- `rock-a-pomo.stl`: 3Dプリント用データ
-- `rock-a-pomo.step`: 編集可能なCADデータ
+外装データは、提出内容が固まり次第追加します。
 
 <!-- TODO: 実際の印刷設定を追加する -->
 <!--
@@ -148,4 +134,3 @@ rock-a-pomo/
 <!-- TODO: 採用するライセンスを追加する -->
 
 `TODO`
-

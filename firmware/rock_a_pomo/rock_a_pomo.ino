@@ -139,73 +139,28 @@ void drawCryingFace() {
   d.fillCircle(220, 96, 15, CHEEK_PINK);
 }
 
-void drawNearlyCryingSoothingFace() {
-  auto &d = StickCP2.Display;
-  drawCryingFace();
-  d.fillRect(88, 4, 64, 14, WHITE);
-  d.setTextDatum(top_center);
-  d.setTextColor(LIGHT_GREY);
-  d.setTextSize(1);
-  d.drawString("SOOTHING", 120, 6);
-}
-
-void drawMixedSoothingFace() {
-  auto &d = StickCP2.Display;
-  d.fillScreen(WHITE);
-
-  d.setTextDatum(top_center);
-  d.setTextColor(LIGHT_GREY);
-  d.setTextSize(1);
-  d.drawString("SOOTHING", 120, 6);
-
-  // 仮の中間顔。泣きそうな眉と、少しゆるんだ口を同時に出す。
-  d.drawLine(48, 48, 96, 66, BLACK);
-  d.drawLine(48, 49, 96, 67, BLACK);
-  d.drawLine(144, 66, 192, 48, BLACK);
-  d.drawLine(144, 67, 192, 49, BLACK);
-  d.drawArc(65, 78, 23, 20, 180, 360, BLACK);
-  d.drawArc(66, 78, 23, 20, 180, 360, BLACK);
-  d.drawArc(175, 78, 23, 20, 180, 360, BLACK);
-  d.drawArc(176, 78, 23, 20, 180, 360, BLACK);
-
-  d.drawArc(120, 86, 21, 14, 20, 160, BLACK);
-  d.fillCircle(20, 96, 15, CHEEK_PINK);
-  d.fillCircle(220, 96, 15, CHEEK_PINK);
-}
-
-void drawAlmostSmilingSoothingFace() {
-  auto &d = StickCP2.Display;
-  d.fillScreen(WHITE);
-
-  d.setTextDatum(top_center);
-  d.setTextColor(LIGHT_GREY);
-  d.setTextSize(1);
-  d.drawString("SOOTHING", 120, 6);
-
-  d.drawArc(63, 84, 29, 35, 180, 360, BLACK);
-  d.drawArc(64, 84, 29, 35, 180, 360, BLACK);
-  d.drawArc(65, 84, 29, 35, 180, 360, BLACK);
-  d.drawArc(175, 84, 29, 35, 180, 360, BLACK);
-  d.drawArc(176, 84, 29, 35, 180, 360, BLACK);
-  d.drawArc(177, 84, 29, 35, 180, 360, BLACK);
-
-  d.drawArc(120, 90, 30, 18, 20, 160, BLACK);
-  d.drawArc(120, 91, 30, 18, 20, 160, BLACK);
-  d.fillCircle(20, 96, 15, CHEEK_PINK);
-  d.fillCircle(220, 96, 15, CHEEK_PINK);
-}
-
 void drawSoothingFace() {
-  // あやし量に応じて、泣き顔から笑顔に近い顔へ段階的に変える。
-  int phase = (soothingAmount * 3) / SOOTHING_GOAL;
+  auto &d = StickCP2.Display;
+  d.fillScreen(WHITE);
 
-  if (phase <= 0) {
-    drawNearlyCryingSoothingFace();
-  } else if (phase == 1) {
-    drawMixedSoothingFace();
-  } else {
-    drawAlmostSmilingSoothingFace();
-  }
+  d.setTextDatum(top_center);
+  d.setTextColor(LIGHT_GREY);
+  d.setTextSize(1);
+  d.drawString("SOOTHING", 120, 6);
+
+  // 泣き止んで笑顔になる途中の「間の顔」。
+  d.drawLine(28, 54, 86, 40, BLACK);
+  d.drawLine(28, 55, 86, 41, BLACK);
+  d.drawLine(28, 56, 86, 42, BLACK);
+  d.drawLine(154, 40, 212, 54, BLACK);
+  d.drawLine(154, 41, 212, 55, BLACK);
+  d.drawLine(154, 42, 212, 56, BLACK);
+
+  d.drawArc(120, 78, 18, 14, 200, 340, BLACK);
+  d.drawArc(120, 79, 18, 14, 200, 340, BLACK);
+  d.drawArc(120, 80, 18, 14, 200, 340, BLACK);
+  d.fillCircle(20, 96, 15, CHEEK_PINK);
+  d.fillCircle(220, 96, 15, CHEEK_PINK);
 
   drawProgressBarOnWhite(soothingAmount, SOOTHING_GOAL);
 }
@@ -219,16 +174,15 @@ void drawLaughingFace(unsigned long remainingMs) {
   d.setTextSize(1);
   d.drawString("LAUGHING", 120, 6);
 
-  // 仮の笑顔。あとで写真に合わせて作り込む前提のシンプル版。
-  d.drawArc(63, 82, 29, 32, 180, 360, BLACK);
-  d.drawArc(64, 82, 29, 32, 180, 360, BLACK);
-  d.drawArc(65, 82, 29, 32, 180, 360, BLACK);
-  d.drawArc(175, 82, 29, 32, 180, 360, BLACK);
-  d.drawArc(176, 82, 29, 32, 180, 360, BLACK);
-  d.drawArc(177, 82, 29, 32, 180, 360, BLACK);
+  // 休憩中の笑顔。目は大きな山型、口は小さな横長の楕円にする。
+  d.drawArc(63, 78, 29, 36, 180, 360, BLACK);
+  d.drawArc(64, 78, 29, 36, 180, 360, BLACK);
+  d.drawArc(65, 78, 29, 36, 180, 360, BLACK);
+  d.drawArc(175, 78, 29, 36, 180, 360, BLACK);
+  d.drawArc(176, 78, 29, 36, 180, 360, BLACK);
+  d.drawArc(177, 78, 29, 36, 180, 360, BLACK);
 
-  d.drawArc(120, 83, 36, 26, 20, 160, BLACK);
-  d.drawArc(120, 84, 36, 26, 20, 160, BLACK);
+  d.fillEllipse(120, 83, 16, 8, BLACK);
   d.fillCircle(20, 96, 15, CHEEK_PINK);
   d.fillCircle(220, 96, 15, CHEEK_PINK);
 
@@ -274,9 +228,9 @@ void playCryBeep() {
   spk.tone(2600, 70);
 }
 
-void playBreakEndCry() {
+void playFocusStartBeep() {
   auto &spk = StickCP2.Speaker;
-  spk.tone(3000, 450);
+  spk.tone(2400, 90);
 }
 
 // 状態を切り替えるときは、タイマーや画面更新フラグもここでまとめて初期化する。
@@ -435,13 +389,11 @@ void loop() {
     }
   }
 
-  // 休憩時間が終わったら通知音を鳴らし、次の作業時間へ戻る。
+  // 休憩時間が終わったら、短い音を鳴らして次の作業時間へ戻る。
   if (state == LAUGHING) {
     unsigned long elapsed = now - stateStartedAt;
     if (elapsed >= REST_MS) {
-      drawCryingFace();
-      playBreakEndCry();
-      delay(500);
+      playFocusStartBeep();
       changeState(SLEEPING);
     } else if (now - lastDisplayUpdate >= 1000 || lastDisplayUpdate == 0) {
       lastDisplayUpdate = now;
