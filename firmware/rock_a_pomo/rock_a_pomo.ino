@@ -34,7 +34,7 @@ const int SOOTHING_DECAY_INTERVAL_MS = 220;
 // 画面描画で使う色。
 const uint16_t LIGHT_GREY = 0xC618;
 const uint16_t DARK_GREY = 0x7BEF;
-const uint16_t CHEEK_PINK = 0xF8B2;
+const uint16_t FACE_COLOR = WHITE;
 
 // ===== 現在の状態を覚えておく変数 =====
 PomodoroState state = SLEEPING;
@@ -49,7 +49,7 @@ bool paused = false;
 unsigned long pausedStartedAt = 0;
 
 // ===== 小さな描画部品 =====
-void drawProgressBarOnWhite(int value, int goal) {
+void drawProgressBarOnBlack(int value, int goal) {
   auto &d = StickCP2.Display;
   int x = 44;
   int y = 120;
@@ -58,8 +58,8 @@ void drawProgressBarOnWhite(int value, int goal) {
   int fillW = constrain((value * w) / goal, 0, w);
 
   d.drawRect(x, y, w, h, DARK_GREY);
-  d.fillRect(x + 1, y + 1, w - 2, h - 2, WHITE);
-  d.fillRect(x + 1, y + 1, fillW - 2 > 0 ? fillW - 2 : 0, h - 2, GREEN);
+  d.fillRect(x + 1, y + 1, w - 2, h - 2, BLACK);
+  d.fillRect(x + 1, y + 1, fillW - 2 > 0 ? fillW - 2 : 0, h - 2, FACE_COLOR);
 }
 
 // ミリ秒を画面表示用の残り時間テキストに変換する。
@@ -79,7 +79,7 @@ String formatRemainingTime(unsigned long remainingMs) {
 // ===== 表情の描画 =====
 void drawSleepingFace(unsigned long remainingMs) {
   auto &d = StickCP2.Display;
-  d.fillScreen(WHITE);
+  d.fillScreen(BLACK);
 
   d.setTextDatum(top_center);
   d.setTextColor(LIGHT_GREY);
@@ -87,26 +87,24 @@ void drawSleepingFace(unsigned long remainingMs) {
   d.drawString("SLEEPING", 120, 6);
 
   // 画像の寝顔に寄せた、太めのU字まぶた。
-  d.drawArc(61, 52, 29, 29, 0, 180, BLACK);
-  d.drawArc(62, 52, 29, 29, 0, 180, BLACK);
-  d.drawArc(63, 52, 29, 29, 0, 180, BLACK);
-  d.drawArc(177, 52, 29, 29, 0, 180, BLACK);
-  d.drawArc(178, 52, 29, 29, 0, 180, BLACK);
-  d.drawArc(179, 52, 29, 29, 0, 180, BLACK);
+  d.drawArc(61, 52, 29, 29, 0, 180, FACE_COLOR);
+  d.drawArc(62, 52, 29, 29, 0, 180, FACE_COLOR);
+  d.drawArc(63, 52, 29, 29, 0, 180, FACE_COLOR);
+  d.drawArc(177, 52, 29, 29, 0, 180, FACE_COLOR);
+  d.drawArc(178, 52, 29, 29, 0, 180, FACE_COLOR);
+  d.drawArc(179, 52, 29, 29, 0, 180, FACE_COLOR);
 
-  d.fillEllipse(120, 79, 16, 8, BLACK);
-  d.fillCircle(20, 94, 15, CHEEK_PINK);
-  d.fillCircle(220, 94, 15, CHEEK_PINK);
+  d.fillEllipse(120, 79, 16, 8, FACE_COLOR);
 
   d.setTextDatum(bottom_center);
-  d.setTextColor(DARK_GREY);
+  d.setTextColor(LIGHT_GREY);
   d.setTextSize(2);
   d.drawString(formatRemainingTime(remainingMs), 120, 132);
 }
 
 void drawCryingFace() {
   auto &d = StickCP2.Display;
-  d.fillScreen(WHITE);
+  d.fillScreen(BLACK);
 
   d.setTextDatum(top_center);
   d.setTextColor(LIGHT_GREY);
@@ -114,34 +112,32 @@ void drawCryingFace() {
   d.drawString("CRYING", 120, 6);
 
   // 画像の泣き顔に寄せた、ぎゅっと閉じた目。
-  d.drawLine(43, 40, 95, 70, BLACK);
-  d.drawLine(43, 41, 95, 71, BLACK);
-  d.drawLine(43, 42, 95, 72, BLACK);
-  d.drawLine(41, 69, 95, 69, BLACK);
-  d.drawLine(41, 70, 95, 70, BLACK);
-  d.drawLine(41, 71, 95, 71, BLACK);
-  d.drawLine(43, 100, 95, 70, BLACK);
-  d.drawLine(43, 101, 95, 71, BLACK);
-  d.drawLine(43, 102, 95, 72, BLACK);
+  d.drawLine(43, 34, 95, 64, FACE_COLOR);
+  d.drawLine(43, 35, 95, 65, FACE_COLOR);
+  d.drawLine(43, 36, 95, 66, FACE_COLOR);
+  d.drawLine(41, 63, 95, 63, FACE_COLOR);
+  d.drawLine(41, 64, 95, 64, FACE_COLOR);
+  d.drawLine(41, 65, 95, 65, FACE_COLOR);
+  d.drawLine(43, 94, 95, 64, FACE_COLOR);
+  d.drawLine(43, 95, 95, 65, FACE_COLOR);
+  d.drawLine(43, 96, 95, 66, FACE_COLOR);
 
-  d.drawLine(197, 40, 145, 70, BLACK);
-  d.drawLine(197, 41, 145, 71, BLACK);
-  d.drawLine(197, 42, 145, 72, BLACK);
-  d.drawLine(199, 69, 145, 69, BLACK);
-  d.drawLine(199, 70, 145, 70, BLACK);
-  d.drawLine(199, 71, 145, 71, BLACK);
-  d.drawLine(197, 100, 145, 70, BLACK);
-  d.drawLine(197, 101, 145, 71, BLACK);
-  d.drawLine(197, 102, 145, 72, BLACK);
+  d.drawLine(197, 34, 145, 64, FACE_COLOR);
+  d.drawLine(197, 35, 145, 65, FACE_COLOR);
+  d.drawLine(197, 36, 145, 66, FACE_COLOR);
+  d.drawLine(199, 63, 145, 63, FACE_COLOR);
+  d.drawLine(199, 64, 145, 64, FACE_COLOR);
+  d.drawLine(199, 65, 145, 65, FACE_COLOR);
+  d.drawLine(197, 94, 145, 64, FACE_COLOR);
+  d.drawLine(197, 95, 145, 65, FACE_COLOR);
+  d.drawLine(197, 96, 145, 66, FACE_COLOR);
 
-  d.fillEllipse(120, 83, 16, 8, BLACK);
-  d.fillCircle(20, 96, 15, CHEEK_PINK);
-  d.fillCircle(220, 96, 15, CHEEK_PINK);
+  d.fillEllipse(120, 77, 16, 8, FACE_COLOR);
 }
 
 void drawSoothingFace() {
   auto &d = StickCP2.Display;
-  d.fillScreen(WHITE);
+  d.fillScreen(BLACK);
 
   d.setTextDatum(top_center);
   d.setTextColor(LIGHT_GREY);
@@ -149,25 +145,23 @@ void drawSoothingFace() {
   d.drawString("SOOTHING", 120, 6);
 
   // 泣き止んで笑顔になる途中の「間の顔」。
-  d.drawLine(28, 54, 86, 40, BLACK);
-  d.drawLine(28, 55, 86, 41, BLACK);
-  d.drawLine(28, 56, 86, 42, BLACK);
-  d.drawLine(154, 40, 212, 54, BLACK);
-  d.drawLine(154, 41, 212, 55, BLACK);
-  d.drawLine(154, 42, 212, 56, BLACK);
+  d.drawLine(28, 54, 86, 40, FACE_COLOR);
+  d.drawLine(28, 55, 86, 41, FACE_COLOR);
+  d.drawLine(28, 56, 86, 42, FACE_COLOR);
+  d.drawLine(154, 40, 212, 54, FACE_COLOR);
+  d.drawLine(154, 41, 212, 55, FACE_COLOR);
+  d.drawLine(154, 42, 212, 56, FACE_COLOR);
 
-  d.drawArc(120, 78, 18, 14, 200, 340, BLACK);
-  d.drawArc(120, 79, 18, 14, 200, 340, BLACK);
-  d.drawArc(120, 80, 18, 14, 200, 340, BLACK);
-  d.fillCircle(20, 96, 15, CHEEK_PINK);
-  d.fillCircle(220, 96, 15, CHEEK_PINK);
+  d.drawArc(120, 78, 18, 14, 200, 340, FACE_COLOR);
+  d.drawArc(120, 79, 18, 14, 200, 340, FACE_COLOR);
+  d.drawArc(120, 80, 18, 14, 200, 340, FACE_COLOR);
 
-  drawProgressBarOnWhite(soothingAmount, SOOTHING_GOAL);
+  drawProgressBarOnBlack(soothingAmount, SOOTHING_GOAL);
 }
 
 void drawLaughingFace(unsigned long remainingMs) {
   auto &d = StickCP2.Display;
-  d.fillScreen(WHITE);
+  d.fillScreen(BLACK);
 
   d.setTextDatum(top_center);
   d.setTextColor(LIGHT_GREY);
@@ -175,19 +169,17 @@ void drawLaughingFace(unsigned long remainingMs) {
   d.drawString("LAUGHING", 120, 6);
 
   // 休憩中の笑顔。目は大きな山型、口は小さな横長の楕円にする。
-  d.drawArc(63, 78, 29, 36, 180, 360, BLACK);
-  d.drawArc(64, 78, 29, 36, 180, 360, BLACK);
-  d.drawArc(65, 78, 29, 36, 180, 360, BLACK);
-  d.drawArc(175, 78, 29, 36, 180, 360, BLACK);
-  d.drawArc(176, 78, 29, 36, 180, 360, BLACK);
-  d.drawArc(177, 78, 29, 36, 180, 360, BLACK);
+  d.drawArc(63, 78, 29, 36, 180, 360, FACE_COLOR);
+  d.drawArc(64, 78, 29, 36, 180, 360, FACE_COLOR);
+  d.drawArc(65, 78, 29, 36, 180, 360, FACE_COLOR);
+  d.drawArc(175, 78, 29, 36, 180, 360, FACE_COLOR);
+  d.drawArc(176, 78, 29, 36, 180, 360, FACE_COLOR);
+  d.drawArc(177, 78, 29, 36, 180, 360, FACE_COLOR);
 
-  d.fillEllipse(120, 83, 16, 8, BLACK);
-  d.fillCircle(20, 96, 15, CHEEK_PINK);
-  d.fillCircle(220, 96, 15, CHEEK_PINK);
+  d.fillEllipse(120, 83, 13, 6, FACE_COLOR);
 
   d.setTextDatum(bottom_center);
-  d.setTextColor(DARK_GREY);
+  d.setTextColor(LIGHT_GREY);
   d.setTextSize(2);
   d.drawString(formatRemainingTime(remainingMs), 120, 132);
 }

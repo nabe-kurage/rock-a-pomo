@@ -31,16 +31,23 @@ Rock-a-Pomoは、次のサイクルを繰り返します。
 5. あやしが完了すると笑顔になり、休憩が始まる
 6. 休憩後、再び眠って次の作業時間を始める
 
-```text
-SLEEPING
-    ↓ 作業時間が終了
-CRYING
-    ↓ 適切な揺れを検出
-SOOTHING
-    ├─ あやし量がゼロに戻る → CRYING
-    └─ あやし量が目標に到達 → LAUGHING
-                                    ↓ 休憩時間が終了
-                                 SLEEPING
+顔、音、タイマー、動作検出を状態ごとに分けることで、ロボットの一連の振る舞いを管理しています。
+
+```mermaid
+stateDiagram-v2
+    [*] --> SLEEPING
+
+    SLEEPING: SLEEPING<br/>作業中 / 寝顔
+    CRYING: CRYING<br/>作業終了 / 泣き顔 + 泣き声
+    SOOTHING: SOOTHING<br/>あやし中 / 間の顔
+    LAUGHING: LAUGHING<br/>休憩中 / 笑顔
+
+    SLEEPING --> CRYING: 作業時間が終了
+    CRYING --> SOOTHING: 優しい揺れを検出
+    SOOTHING --> SOOTHING: 適切な揺れ / あやし量が増える
+    SOOTHING --> CRYING: あやし量がゼロになる
+    SOOTHING --> LAUGHING: あやし量が目標に到達
+    LAUGHING --> SLEEPING: 休憩時間が終了 / 短い音
 ```
 
 あやし量は、検出した動きが弱すぎず、強すぎない場合にだけ増加します。
