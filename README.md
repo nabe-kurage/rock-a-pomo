@@ -126,7 +126,5 @@ Possible future improvements include:
 
 ## License
 
-<!-- TODO: Add the chosen license. -->
-
-`TODO`
+MIT License
 
