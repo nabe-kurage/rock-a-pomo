@@ -1,4 +1,5 @@
 # Rock-a-Pomo
+<img width="800" height="450" alt="ezgif-1bc7e1ec580c27be" src="https://github.com/user-attachments/assets/f9e7280d-652c-4bdd-aae9-264f7aa52f8a" />
 
 **Rock it gently to start your Pomodoro break.**
 
@@ -113,19 +114,6 @@ The following values can be changed in the source code:
 - Required soothing amount
 
 <!-- TODO: Add the actual variable names and default values. -->
-
-## 3D Data
-
-The outer body data will be added once the final submission assets are ready.
-
-<!-- TODO: Add the actual print settings. -->
-<!--
-Printer:
-Filament:
-Layer height:
-Infill:
-Support:
--->
 
 ## Future Ideas
 
