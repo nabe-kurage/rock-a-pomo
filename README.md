@@ -1,70 +1,70 @@
 # Rock-a-Pomo
 
-**揺らして、ポモドーロの休憩を始めよう。**
+**Rock it gently to start your Pomodoro break.**
 
-Rock-a-Pomoは、M5StickC Plus2で作ったポモドーロロボットです。  
-作業時間が終わると泣き始め、両手で優しく揺らしてあやすと、休憩時間が始まります。
+Rock-a-Pomo is a Pomodoro robot built with an M5StickC Plus2.  
+When a focus session ends, it starts crying. To begin the break, you pick it up with both hands and gently rock it until it calms down.
 
-- Hacksterプロジェクト: `TODO`
-- デモ動画: `TODO`
+- Hackster project: `TODO`
+- Demo video: `TODO`
 
-## 概要
+## Overview
 
-ポモドーロタイマーは便利ですが、通知は簡単に閉じたり、無視したりできます。
+Pomodoro timers are useful, but their notifications are easy to dismiss or ignore.
 
-Rock-a-Pomoは、その通知を身体的なインタラクションへ置き換えます。
+Rock-a-Pomo turns that notification into a physical interaction.
 
-作業時間中、ロボットは静かに眠っています。タイマーが終了すると、画面が泣き顔に変わり、内蔵ブザーから泣き声を出します。
+During a focus session, the robot sleeps quietly. When the timer ends, its display changes to a crying face and the built-in buzzer makes crying sounds.
 
-泣き止ませるには、ロボットを両手で持ち、赤ちゃんをあやすように優しく揺らす必要があります。十分にあやされるとRock-a-Pomoは笑顔になり、休憩時間が始まります。
+To stop the crying, the user needs to hold the robot with both hands and gently rock it, like soothing a baby. Once it has been soothed enough, Rock-a-Pomo smiles and the break begins.
 
-外装は、M5StickC Plus2本体よりも意図的に大きく設計しています。ユーザーがキーボードやマウスから両手を離し、一度作業から意識を切り替えられるようにするためです。
+The outer body is intentionally larger than the M5StickC Plus2 itself. This encourages the user to take both hands away from the keyboard and mouse, creating a small physical transition out of work mode.
 
-## 動作の流れ
+## Interaction Flow
 
-Rock-a-Pomoは、次のサイクルを繰り返します。
+Rock-a-Pomo repeats the following cycle:
 
-1. 作業時間中は眠る
-2. 作業時間が終わると泣く
-3. 内蔵IMUで優しい揺れを検出する
-4. 適切に揺らしている間、あやし量が増える
-5. あやしが完了すると笑顔になり、休憩が始まる
-6. 休憩後、再び眠って次の作業時間を始める
+1. Sleep during the focus session
+2. Cry when the focus session ends
+3. Detect gentle rocking with the built-in IMU
+4. Increase the soothing amount while the motion is appropriate
+5. Smile and start the break when soothing is complete
+6. Sleep again after the break and start the next focus session
 
-顔、音、タイマー、動作検出を状態ごとに分けることで、ロボットの一連の振る舞いを管理しています。
+The robot manages its behavior by separating faces, sounds, timers, and motion detection into states.
 
 ```mermaid
 stateDiagram-v2
     [*] --> SLEEPING
 
-    SLEEPING: SLEEPING<br/>作業中 / 寝顔
-    CRYING: CRYING<br/>作業終了 / 泣き顔 + 泣き声
-    SOOTHING: SOOTHING<br/>あやし中 / 間の顔
-    LAUGHING: LAUGHING<br/>休憩中 / 笑顔
+    SLEEPING: SLEEPING<br/>Focus session / sleeping face
+    CRYING: CRYING<br/>Focus session ended / crying face + crying sound
+    SOOTHING: SOOTHING<br/>Being soothed / in-between face
+    LAUGHING: LAUGHING<br/>Break time / smiling face
 
-    SLEEPING --> CRYING: 作業時間が終了
-    CRYING --> SOOTHING: 優しい揺れを検出
-    SOOTHING --> SOOTHING: 適切な揺れ / あやし量が増える
-    SOOTHING --> CRYING: あやし量がゼロになる
-    SOOTHING --> LAUGHING: あやし量が目標に到達
-    LAUGHING --> SLEEPING: 休憩時間が終了 / 短い音
+    SLEEPING --> CRYING: Focus session ends
+    CRYING --> SOOTHING: Gentle rocking detected
+    SOOTHING --> SOOTHING: Appropriate rocking / soothing amount increases
+    SOOTHING --> CRYING: Soothing amount reaches zero
+    SOOTHING --> LAUGHING: Soothing goal is reached
+    LAUGHING --> SLEEPING: Break ends / short beep
 ```
 
-あやし量は、検出した動きが弱すぎず、強すぎない場合にだけ増加します。
+The soothing amount increases only when the detected motion is neither too weak nor too strong.
 
-あやしが完了する前に揺らすのをやめると、あやし量は少しずつ減少します。ゼロになると、Rock-a-Pomoは再び泣き始めます。
+If the user stops rocking before soothing is complete, the soothing amount gradually decreases. When it reaches zero, Rock-a-Pomo starts crying again.
 
-## M5StickC Plus2の活用
+## How Rock-a-Pomo Uses M5StickC Plus2
 
-| 機能 | Rock-a-Pomoでの役割 |
+| Feature | Role in Rock-a-Pomo |
 |---|---|
-| ディスプレイ | 表情とあやし量を表示する |
-| ブザー | 泣き声と通知音を出す |
-| IMU | あやすための揺れを検出する |
-| 内蔵バッテリー | ケーブルなしで手に持てるようにする |
-| ESP32 | タイマー、状態遷移、画面、音、IMUを制御する |
+| Display | Shows facial expressions and the soothing amount |
+| Buzzer | Plays crying sounds and notification beeps |
+| IMU | Detects the gentle rocking motion |
+| Built-in battery | Allows the robot to be held without a cable |
+| ESP32 | Controls the timer, state transitions, display, sound, and IMU |
 
-## リポジトリ構成
+## Repository Structure
 
 ```text
 rock-a-pomo/
@@ -74,70 +74,71 @@ rock-a-pomo/
         └── rock_a_pomo.ino
 ```
 
-完成版のファームウェアはこちらです。
+The final firmware is here:
 
 [`firmware/rock_a_pomo/rock_a_pomo.ino`](./firmware/rock_a_pomo/rock_a_pomo.ino)
 
-## セットアップ
+## Setup
 
-<!-- TODO: 実際の開発環境と設定に置き換える -->
+<!-- TODO: Replace with the actual development environment and settings. -->
 
-### 必要な環境
+### Requirements
 
 - M5Stack M5StickC Plus2
 - Arduino IDE: `TODO`
-- ESP32ボードパッケージ: `TODO`
-- M5Stackライブラリ: `TODO`
-- その他のライブラリ: `TODO`
+- ESP32 board package: `TODO`
+- M5Stack library: `TODO`
+- Other libraries: `TODO`
 
-### 書き込み方法
+### Uploading the Firmware
 
-1. 必要なボードパッケージとライブラリをインストールします。
-2. `firmware/rock_a_pomo/rock_a_pomo.ino`を開きます。
-3. 使用するボードとポートを選択します。
-4. M5StickC Plus2へプログラムを書き込みます。
-5. 外装を3Dプリントし、M5StickC Plus2を取り付けます。
+1. Install the required board package and libraries.
+2. Open `firmware/rock_a_pomo/rock_a_pomo.ino`.
+3. Select the board and port.
+4. Upload the program to the M5StickC Plus2.
+5. 3D print the outer body and mount the M5StickC Plus2.
 
-<!-- TODO: 正確なボード設定と書き込み手順を追加する -->
+<!-- TODO: Add the exact board settings and upload steps. -->
 
-## 設定項目
+## Configuration
 
-次の値は、ソースコード内で変更できます。
+The following values can be changed in the source code:
 
-- 作業時間
-- 休憩時間
-- 揺れ判定の最小値
-- 揺れ判定の最大値
-- あやし量の増加速度
-- あやし量の減少速度
-- あやし完了に必要な値
+- Focus duration
+- Break duration
+- Minimum rocking threshold
+- Maximum rocking threshold
+- Soothing increase speed
+- Soothing decrease speed
+- Required soothing amount
 
-<!-- TODO: 実際の変数名と初期値を追加する -->
+<!-- TODO: Add the actual variable names and default values. -->
 
-## 3Dデータ
+## 3D Data
 
-外装データは、提出内容が固まり次第追加します。
+The outer body data will be added once the final submission assets are ready.
 
-<!-- TODO: 実際の印刷設定を追加する -->
+<!-- TODO: Add the actual print settings. -->
 <!--
-使用プリンタ:
-フィラメント:
-積層ピッチ:
-インフィル:
-サポート:
+Printer:
+Filament:
+Layer height:
+Infill:
+Support:
 -->
 
-## 今後の発展
+## Future Ideas
 
-今後は、次のような機能を追加する構想があります。
+Possible future improvements include:
 
-- 泣いているときに手を動かすサーボ機構
-- 左右に揺れる起き上がりこぼし構造
-- 本体上でのタイマー設定
-- 表情や泣き声の追加
+- A servo mechanism that moves the hands while the robot is crying
+- A self-righting body structure that rocks from side to side
+- Timer settings directly on the device
+- Additional facial expressions and crying sounds
 
-## ライセンス
+## License
 
-<!-- TODO: 採用するライセンスを追加する -->
+<!-- TODO: Add the chosen license. -->
 
 `TODO`
+
